@@ -10,13 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219100300) do
+ActiveRecord::Schema.define(version: 20161219111953) do
 
   create_table "drivers", force: :cascade do |t|
     t.string   "name"
     t.string   "license_number"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "metrics", force: :cascade do |t|
+    t.string   "metric_name"
+    t.integer  "value"
+    t.decimal  "lat",         precision: 20, scale: 3
+    t.decimal  "lon",         precision: 20, scale: 3
+    t.datetime "timestamp"
+    t.integer  "driver_id"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.index ["driver_id"], name: "index_metrics_on_driver_id"
   end
 
 end
