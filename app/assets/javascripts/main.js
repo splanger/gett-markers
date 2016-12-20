@@ -2,7 +2,8 @@ $( document ).ready(function() {
     // Initialize data
     var drivers = [];
 
-    $("#drivers-list").find('option').each(function() {
+    var drivers_list = $("#drivers-list").find('option')
+    drivers_list.each(function() {
         drivers.push(
             {
                 id: $(this).val(),
@@ -12,5 +13,14 @@ $( document ).ready(function() {
         )
     });
 
-    console.log(drivers)
+    var current_driver = {
+        id: drivers_list[0].value,
+        name: drivers_list[0].text,
+        license_number: drivers_list[0].attributes['license_number'].value
+    };
+
+
+    console.log(drivers);
+    console.log('Current driver:');
+    console.log(current_driver);
 });
