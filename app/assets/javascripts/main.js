@@ -26,7 +26,6 @@ $( document ).ready(function() {
     });
     var current_metric = metrics_options[0].value;
 
-
     console.log('Drivers:');
     console.log(drivers);
     console.log('Metrics:');
@@ -36,4 +35,23 @@ $( document ).ready(function() {
     console.log(current_driver);
     console.log('Current metric:');
     console.log(current_metric);
+
+    // Initialize the map
+    init_map(current_driver, current_metric);
+
+    // Set listeners
+    //$("#drivers-list")
+
+    /** ========== FUNCTIONS ========== */
+
+    /**
+     *
+     * @param current_driver An object representing currently selected driver
+     * @param current_metric Currently selected metric's name
+     */
+    function init_map(current_driver, current_metric) {
+        // Fetch a list of metric points...
+        $("#map").load("/drivers/" + current_driver['id'] +
+            "/metrics?metric_name=" + current_metric);
+    }
 });
