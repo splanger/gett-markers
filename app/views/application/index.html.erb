@@ -1,0 +1,31 @@
+
+<% if @no_data == TRUE %>
+    <p style="color: red; font-weight: 500">NO DATA TO SHOW :(</p>
+    <p style="color: red; font-weight: 500">Try to run "rake gett:import"</p>
+<% else  %>
+    <label>Driver:</label>
+    <select id="drivers-list">
+      <%= @drivers.each do |driver| %>
+        <option value="<%= driver.id %>" license_number="<%= driver.license_number %>"><%= driver.name %></option>
+      <% end %>
+    </select>
+
+    <label>Metric:</label>
+    <select id="metrics-list">
+      <%= @metrics.each do |metric| %>
+          <option value="<%= metric.metric_name %>"><%= metric.metric_name %></option>
+      <% end %>
+    </select>
+
+    <br><br>
+
+    Showing <span id="current-metric-name" class="metric-name"><%= @metrics.first.metric_name %></span>
+    metric of <span id="current-driver-name" class="driver-name"><%= @drivers.first.name %></span>
+    (license number: <span id="current-driver-license-number"><%= @drivers.first.license_number %></span>)
+<% end %>
+
+<br><br>
+Map:
+<div id="map">
+  Hello Gett
+</div>

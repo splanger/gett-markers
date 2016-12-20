@@ -61,6 +61,9 @@ namespace :gett do
     puts "Finished importing metrics. (Imported: #{num_imported} | Ignored: #{num_ignored})"
   end
 
+  desc 'Imports all drivers and metrics'
+  task :import => [:import_drivers, :import_metrics]
+
   def seeds_from_json_file(seed_filename)
     # Read seed data from a JSON file
     data_file = File.join(data_path, seed_filename)
