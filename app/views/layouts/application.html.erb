@@ -3,10 +3,10 @@
   <head>
     <title>Gett Metrics App</title>
     <%= csrf_meta_tags %>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtpPvE1MJIqmuu9Ort2o9CZ7FyNCdBf8g"
-            async defer></script>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtpPvE1MJIqmuu9Ort2o9CZ7FyNCdBf8g&callback=initialize_map"
+            async defer></script>
   </head>
 
   <body>
