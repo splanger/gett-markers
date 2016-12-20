@@ -22,10 +22,10 @@
     Showing <span id="current-metric-name" class="metric-name"><%= @metrics.first.metric_name %></span>
     metric of <span id="current-driver-name" class="driver-name"><%= @drivers.first.name %></span>
     (license number: <span id="current-driver-license-number"><%= @drivers.first.license_number %></span>)
+
+    <br>
 <% end %>
 
-<br><br>
-Map:
-<div id="map">
-  Hello Gett
-</div>
+<br>
+
+<div id="map-canvas"></div>

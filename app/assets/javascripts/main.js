@@ -2,6 +2,7 @@ $( document ).ready(function() {
     // Initialize data
     var drivers = [];
     var metrics_names = [];
+    var markers = []; // Markers on the map
 
     var drivers_list = $("#drivers-list");
     var drivers_options = drivers_list.find('option');
@@ -39,7 +40,16 @@ $( document ).ready(function() {
     console.log(current_metric);
 
     // Initialize the map
-    render_map(current_driver, current_metric);
+    for (var i = 0; i < 3; i++) {
+        if (typeof google === 'undefined') {
+            console.log('Waiting for "google" lib to load...');
+            setTimeout('', 1);
+        } else {
+            break;
+        }
+    }
+    var map = initialize_map();
+    render_map(current_driver, current_metric, map);
 
 
     /** ========== ATTACH LISTENERS ========== */
@@ -50,12 +60,12 @@ $( document ).ready(function() {
             name: selected_option[0].text,
             license_number: selected_option[0].attributes['license_number'].value
         };
-        render_map(current_driver, current_metric);
+        render_map(current_driver, current_metric, map);
     });
 
     metrics_list.change(function() {
-        var current_metric = $(this).find('option:selected').val()
-        render_map(current_driver, current_metric);
+        var current_metric = $(this).find('option:selected').val();
+        render_map(current_driver, current_metric, map);
     });
 
 
@@ -65,12 +75,55 @@ $( document ).ready(function() {
      *
      * @param current_driver An object representing currently selected driver
      * @param current_metric Currently selected metric's name
+     * @param map Reference to Google Map
      */
-    function render_map(current_driver, current_metric) {
+    function render_map(current_driver, current_metric, map) {
         console.log('Rendering a map of metric ' + current_metric + ' for ' + current_driver['name']);
 
+        var endpoint = "/drivers/" + current_driver['id'] + "/metrics?metric_name=" + current_metric;
+        $.ajax(endpoint, {
+            success: function(metrics) {
+                console.log('Got metrics');
+                console.log(metrics);
+
+                // Clean a map
+                for (var i in markers) {
+                    markers[i].setMap(null);
+                }
+                markers.length = 0;
+
+                // Put markers on a map
+                metrics.forEach(function(metric, index) {
+                    var coordinates = new google.maps.LatLng(metric.lat, metric.lon);
+                    var marker = new google.maps.Marker({
+                        position: coordinates,
+                        map: map,
+                        title: "" + metric.value
+                    });
+                    markers.push(marker);
+                });
+
+                if (metrics.length > 0) {
+                    var coords = new google.maps.LatLng(metrics[0].lat, metrics[0].lon);
+                    map.panTo(coords);
+                }
+            },
+            error: function() {
+                console.log("Failed to bring data from " + endpoint);
+            }
+        });
+
         // Fetch a list of metric points...
-        $("#map").load("/drivers/" + current_driver['id'] +
-            "/metrics?metric_name=" + current_metric);
+        //$("#map-canvas").load("/drivers/" + current_driver['id'] +
+        //    "/metrics?metric_name=" + current_metric);
+    }
+
+    function initialize_map() {
+        var mapOptions = {
+            center: new google.maps.LatLng(-34.397, 150.644),
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        return new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     }
 });
