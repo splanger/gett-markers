@@ -22,7 +22,7 @@ $( document ).ready(function() {
         license_number: drivers_options[0].attributes['license_number'].value
     };
 
-    var metrics_list = $("#metrics-list")
+    var metrics_list = $("#metrics-list");
     var metrics_options = metrics_list.find('option');
     metrics_options.each(function() {
         metrics_names.push($(this).val())
@@ -60,11 +60,14 @@ $( document ).ready(function() {
             name: selected_option[0].text,
             license_number: selected_option[0].attributes['license_number'].value
         };
+        $('#current-driver-name').text(current_driver.name);
+        $('#current-driver-license-number').text(current_driver.license_number);
         render_map(current_driver, current_metric, map);
     });
 
     metrics_list.change(function() {
         var current_metric = $(this).find('option:selected').val();
+        $('#current-metric-name').text(current_metric);
         render_map(current_driver, current_metric, map);
     });
 
